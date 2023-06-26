@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".fragment.ProfileFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_bold"
+        android:includeFontPadding="false"
+        android:text="Data Umum"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Nama"
+        android:includeFontPadding="false"
+        android:inputType="text"
+        android:enabled="false"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:digits="0123456789qwertzuiopasdfghjklyxcvbnm_-."
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Username"
+        android:enabled="false"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins_bold"
+        android:includeFontPadding="false"
+        android:text="Data Akun"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Email"
+        android:includeFontPadding="false"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_new_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Kata sandi baru"
+        android:includeFontPadding="false"
+        android:inputType="textPassword"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_new_password_confirmation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Konfirmasi Kata sandi baru"
+        android:includeFontPadding="false"
+        android:inputType="textPassword"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/poppins_bold"
+        android:includeFontPadding="false"
+        android:text="Verifikasi Perubahan Data"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/edt_old_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input_text"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Kata sandi lama"
+        android:includeFontPadding="false"
+        android:inputType="textPassword"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="18dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_yellow_rounded"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/poppins_bold"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingVertical="16dp"
+        android:stateListAnimator="@animator/btn_click"
+        android:text="Simpan Perubahan"
+        android:textColor="@color/black" />
+
+
+</LinearLayout>

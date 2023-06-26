@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginHorizontal="4dp"
+        android:paddingTop="30dp"
+        android:clipChildren="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="bottom"
+            android:paddingBottom="10dp"
+            android:paddingHorizontal="10dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_menu"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-30dp"
+                android:adjustViewBounds="true"
+                tools:src="@tools:sample/avatars"
+                app:shapeAppearanceOverlay="@style/roundedCorners"
+                app:layout_constraintTop_toTopOf="@id/box"
+                app:layout_constraintStart_toStartOf="@id/box"/>
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paket Keluarga"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_bold"
+                android:includeFontPadding="false" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingVertical="3dp"
+                android:gravity="center"
+                android:background="@drawable/bg_yellow_rounded_small"
+                android:text="Rp200.000"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_semibold"
+                android:includeFontPadding="false" />
+
+        </LinearLayout>
+
+<!--        <com.google.android.material.imageview.ShapeableImageView-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:layout_marginTop="-30dp"-->
+<!--            android:layout_marginStart="8dp"-->
+<!--            tools:src="@tools:sample/avatars"-->
+<!--            app:shapeAppearanceOverlay="@style/roundedCorners"-->
+<!--            app:layout_constraintTop_toTopOf="@id/box"-->
+<!--            app:layout_constraintStart_toStartOf="@id/box"/>-->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

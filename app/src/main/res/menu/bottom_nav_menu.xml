@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/round_home_24"
+        android:title="@string/nav_home" />
+
+    <item
+        android:id="@+id/navigation_menu"
+        android:icon="@drawable/round_restaurant_menu_24"
+        android:title="@string/nav_menu" />
+
+    <item
+        android:id="@+id/navigation_transaction_history"
+        android:icon="@drawable/round_receipt_24"
+        android:title="@string/nav_transaction_history"/>
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/round_forum_24"
+        android:title="@string/nav_chat" />
+
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/round_person_24"
+        android:title="@string/nav_profile" />
+
+
+</menu>
