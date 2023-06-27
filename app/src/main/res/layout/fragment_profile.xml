@@ -27,7 +27,7 @@
         android:hint="Nama"
         android:includeFontPadding="false"
         android:inputType="text"
-        android:enabled="false"
+        android:enabled="true"
         android:paddingHorizontal="24dp"
         android:paddingVertical="18dp"
         android:textSize="14sp" />
