@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "18574090787",
+    "project_id": "makanyuk-fbed6",
+    "storage_bucket": "makanyuk-fbed6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18574090787:android:2cbc8f4abc7ea06e3dc796",
+        "android_client_info": {
+          "package_name": "com.pnj.makanyuk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "18574090787-brpt0rdnmvmpmfhgpf4g08jaasvgs2vv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWscrstz9HmrUges0htC8KpZfk9e_1jow"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18574090787-brpt0rdnmvmpmfhgpf4g08jaasvgs2vv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
