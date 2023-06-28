@@ -1,115 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
+    android:clipToPadding="false"
     tools:context=".fragment.TransactionHistoryFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/ic_location"
+        android:layout_width="30dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/round_location_on_24"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lokasi"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/yellow" />
+
+    <TextView
+        android:id="@+id/tv_lokasi_kamu"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="64dp"
-        android:clipToPadding="false">
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_medium"
+        android:includeFontPadding="false"
+        android:text="Lokasi kamu"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/ic_location"
+        app:layout_constraintTop_toTopOf="@id/ic_location" />
 
-        <ImageView
-            android:id="@+id/ic_location"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/round_location_on_24"
-            app:tint="@color/yellow"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_lokasi"
-            app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:id="@+id/tv_lokasi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:fontFamily="@font/poppins_bold"
+        android:includeFontPadding="false"
+        android:text="Politeknik Negeri Jakarta"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/ic_location"
+        app:layout_constraintTop_toBottomOf="@id/tv_lokasi_kamu" />
 
-        <TextView
-            android:id="@+id/tv_lokasi_kamu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Lokasi kamu"
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_medium"
-            android:includeFontPadding="false"
-            app:layout_constraintTop_toTopOf="@id/ic_location"
-            app:layout_constraintStart_toEndOf="@id/ic_location"/>
+    <ImageView
+        android:id="@+id/ic_drop_lokasi"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/round_keyboard_arrow_down_24"
+        app:layout_constraintBottom_toBottomOf="@id/tv_lokasi_kamu"
+        app:layout_constraintStart_toEndOf="@id/tv_lokasi_kamu"
+        app:layout_constraintTop_toTopOf="@id/tv_lokasi_kamu"
+        app:tint="@color/yellow" />
 
-        <TextView
-            android:id="@+id/tv_lokasi"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Politeknik Negeri Jakarta"
-            android:textSize="12sp"
-            android:fontFamily="@font/poppins_bold"
-            android:includeFontPadding="false"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/tv_lokasi_kamu"
-            app:layout_constraintStart_toEndOf="@id/ic_location"/>
-
-        <ImageView
-            android:id="@+id/ic_drop_lokasi"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/round_keyboard_arrow_down_24"
-            app:tint="@color/yellow"
-            app:layout_constraintTop_toTopOf="@id/tv_lokasi_kamu"
-            app:layout_constraintBottom_toBottomOf="@id/tv_lokasi_kamu"
-            app:layout_constraintStart_toEndOf="@id/tv_lokasi_kamu"/>
-
-        <EditText
-            android:id="@+id/edt_search_bar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="10dp"
-            android:hint="Cari riwayat transaksi anda"
-            android:background="@drawable/bg_search_bar"
-            android:fontFamily="@font/poppins_medium"
-            android:includeFontPadding="false"
-            android:textSize="12sp"
-            android:drawableStart="@drawable/round_search_24"
-            android:drawablePadding="6dp"
-            android:drawableTint="@color/dark_grey"
-            app:layout_constraintTop_toBottomOf="@id/ic_location"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+    <EditText
+        android:id="@+id/edt_search_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_search_bar"
+        android:drawableStart="@drawable/round_search_24"
+        android:drawablePadding="6dp"
+        android:drawableTint="@color/dark_grey"
+        android:fontFamily="@font/poppins_medium"
+        android:hint="Cari riwayat transaksi anda"
+        android:includeFontPadding="false"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="10dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ic_location" />
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="16dp"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
-            app:layout_constraintTop_toBottomOf="@id/edt_search_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_transaction"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_transactions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:nestedScrollingEnabled="false"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_search_bar"
+        tools:listitem="@layout/item_transaction" />
 
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/loading"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            app:indicatorColor="@color/yellow"
-            app:layout_constraintTop_toBottomOf="@id/edt_search_bar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/yellow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edt_search_bar" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
