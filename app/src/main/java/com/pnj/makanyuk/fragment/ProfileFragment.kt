@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil.setContentView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.activity.LoginActivity
 import com.pnj.makanyuk.activity.MainActivity
+import com.pnj.makanyuk.data.chat.SharedViewModel
 import com.pnj.makanyuk.databinding.FragmentProfileBinding
 import com.pnj.makanyuk.databinding.FragmentTransactionHistoryBinding
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +43,9 @@ class ProfileFragment : Fragment() {
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email
     var data_email = email.toString()
+
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +125,10 @@ class ProfileFragment : Fragment() {
             }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        sharedViewModel.username.value = binding.edtUsername.text.toString()
+    }
         override fun onStart() {
         super.onStart()
 
