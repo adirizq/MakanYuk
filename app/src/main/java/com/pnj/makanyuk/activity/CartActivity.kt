@@ -8,6 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.iamageo.library.BeautifulDialog
@@ -35,7 +36,7 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
     private val dateFormat = SimpleDateFormat("yyyyMMdd/HHmmss", Locale("id", "ID"))
 
     private val db = Firebase.firestore
-    private val uid = "DNGowVPxTCy5T7bp5LrK"
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private var totalPrice: Int = 0
 
     private lateinit var cartItemList: ArrayList<CartItem>

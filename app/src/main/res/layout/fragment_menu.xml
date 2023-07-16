@@ -10,7 +10,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_shopping_bag"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_margin="32dp"

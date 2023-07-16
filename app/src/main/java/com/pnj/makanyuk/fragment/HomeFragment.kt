@@ -56,7 +56,7 @@ class HomeFragment : Fragment() {
                     productsArrayList.add(product)
                 }
 
-                productsAdapter = ProductsAdapter(productsArrayList.take(4) as ArrayList<Products>)
+                productsAdapter = ProductsAdapter(productsArrayList.shuffled().take(4) as ArrayList<Products>)
 
                 binding.rvNew.setHasFixedSize(true)
                 binding.rvNew.adapter = productsAdapter

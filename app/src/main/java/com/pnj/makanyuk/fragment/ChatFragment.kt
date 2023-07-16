@@ -41,8 +41,9 @@ class ChatFragment : Fragment() {
     private lateinit var chatRecycleView: RecyclerView
     private lateinit var chatArrayList: ArrayList<Chat>
     private lateinit var chatAdapter: ChatAdapter
+    private lateinit var currUserEmail: String
 
-    val uid = "nAW7uzigeaV898EC9LzK6DC3jAR2" //mhs@gmail.com
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     val db = FirebaseFirestore.getInstance()
     val personQuery = db.collection("users").document(uid)
 
@@ -63,11 +64,15 @@ class ChatFragment : Fragment() {
         chatRecycleView.setHasFixedSize(true)
 
         chatArrayList = arrayListOf()
-        chatAdapter = ChatAdapter(chatArrayList)
 
-        chatRecycleView.adapter = chatAdapter
+        personQuery.get()
+            .addOnSuccessListener {
+                currUserEmail = it.getString("email").toString()
+                chatAdapter = ChatAdapter(chatArrayList, currUserEmail)
+                chatRecycleView.adapter = chatAdapter
 
-        load_chat_data()
+                loadChatData(currUserEmail)
+            }
 
         binding.btnSend.setOnClickListener {
             val message = binding.edtChat.text.toString()
@@ -77,9 +82,10 @@ class ChatFragment : Fragment() {
                     if (document != null) {
                         // Get the data for the document
                         val username = document.getString("username").toString()
+                        val name = document.getString("name").toString()
+                        val email = document.getString("email").toString()
 
-                        Log.e("chat", message)
-                        send_chat(username, message)
+                        send_chat(username, message, name, email)
                     }
                 }
                 .addOnFailureListener {
@@ -93,7 +99,9 @@ class ChatFragment : Fragment() {
         return binding.root
     }
 
-    private fun load_chat_data() {
+    private fun loadChatData(email: String) {
+        binding.loading.visibility = View.VISIBLE
+
         database = FirebaseDatabase.getInstance().getReference("chat_db")
         database.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -103,8 +111,9 @@ class ChatFragment : Fragment() {
                         val chat_data = chatSnapshoot.getValue(Chat::class.java)
                         chatArrayList.add(chat_data!!)
                     }
-                    chatRecycleView.adapter = ChatAdapter(chatArrayList)
+                    chatRecycleView.adapter = ChatAdapter(chatArrayList, email)
                 }
+                binding.loading.visibility = View.GONE
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -112,16 +121,16 @@ class ChatFragment : Fragment() {
         })
     }
 
-    private fun send_chat(username: String, message: String) {
+    private fun send_chat(username: String, message: String, name: String, email: String) {
         val time  = Calendar.getInstance().time
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        val current_time = formatter.format(time).toString()
+        val currentTime = formatter.format(time).toString()
 
-        val chat = Chat(username, message, current_time)
+        val chat = Chat(username, message, name, email, currentTime)
 
         database = FirebaseDatabase.getInstance().getReference("chat_db")
 
-        database.child(current_time).setValue(chat).addOnSuccessListener {
+        database.child(currentTime).setValue(chat).addOnSuccessListener {
             binding.edtChat.text.clear()
         }
             .addOnFailureListener {

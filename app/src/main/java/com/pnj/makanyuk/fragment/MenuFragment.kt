@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,7 +39,7 @@ class MenuFragment : Fragment() {
     private lateinit var productsArrayList : ArrayList<Products>
     private lateinit var productsAdapter: ProductsAdapter
 
-    private val uid = "DNGowVPxTCy5T7bp5LrK"
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private var db = FirebaseFirestore.getInstance()
     private var fullProductsArrayList = ArrayList<Products>()
 
@@ -54,24 +55,26 @@ class MenuFragment : Fragment() {
         super.onResume()
         load_data()
 
-        if (role == "user") {
-            binding.btnShoppingBag.visibility = View.GONE
-            binding.btnAddProduct.visibility = View.GONE
+        db.collection("users").document(uid).get().addOnSuccessListener { snapshot ->
+            role = snapshot.getString("role").toString()
 
-            db.collection("users").document(uid).get()
-                .addOnSuccessListener {
-                    var cartItem = it.get("cart_items")
+            if (role == "user") {
+                binding.btnShoppingBag.visibility = View.GONE
+                binding.btnAddProduct.visibility = View.GONE
 
-                    if (cartItem != null) {
-                        cartItem = cartItem as List<*>
-                        if (cartItem.size != 0) {
-                            binding.btnShoppingBag.visibility = View.VISIBLE
-                        }
+                var cartItem = snapshot.get("cart_items")
+
+                if (cartItem != null) {
+                    cartItem = cartItem as List<*>
+                    if (cartItem.size != 0) {
+                        binding.btnShoppingBag.visibility = View.VISIBLE
                     }
                 }
-        } else {
-            binding.btnShoppingBag.visibility = View.GONE
-            binding.btnAddProduct.visibility = View.VISIBLE
+            } else {
+                binding.btnShoppingBag.visibility = View.GONE
+                binding.btnAddProduct.visibility = View.VISIBLE
+            }
+
         }
     }
 
@@ -81,7 +84,6 @@ class MenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMenuBinding.inflate(layoutInflater)
-        role = "user"
 
         binding.swipeRefresh.setColorSchemeResources(R.color.yellow)
 
@@ -106,24 +108,26 @@ class MenuFragment : Fragment() {
             activity?.startActivity(intent)
         }
 
-        if (role == "user") {
-            binding.btnShoppingBag.visibility = View.GONE
-            binding.btnAddProduct.visibility = View.GONE
+        db.collection("users").document(uid).get().addOnSuccessListener { snapshot ->
+            role = snapshot.getString("role").toString()
 
-            db.collection("users").document(uid).get()
-                .addOnSuccessListener {
-                    var cartItem = it.get("cart_items")
+            if (role == "user") {
+                binding.btnShoppingBag.visibility = View.GONE
+                binding.btnAddProduct.visibility = View.GONE
 
-                    if (cartItem != null) {
-                        cartItem = cartItem as List<*>
-                        if (cartItem.size != 0) {
-                            binding.btnShoppingBag.visibility = View.VISIBLE
-                        }
+                var cartItem = snapshot.get("cart_items")
+
+                if (cartItem != null) {
+                    cartItem = cartItem as List<*>
+                    if (cartItem.size != 0) {
+                        binding.btnShoppingBag.visibility = View.VISIBLE
                     }
                 }
-        } else {
-            binding.btnShoppingBag.visibility = View.GONE
-            binding.btnAddProduct.visibility = View.VISIBLE
+            } else {
+                binding.btnShoppingBag.visibility = View.GONE
+                binding.btnAddProduct.visibility = View.VISIBLE
+            }
+
         }
 
         binding.btnAddProduct.setOnClickListener{

@@ -13,58 +13,20 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.pnj.makanyuk.R
 
-class ChatAdapter(private  val chatList: ArrayList<Chat>):
+class ChatAdapter(private val chatList: ArrayList<Chat>, private val currUserEmail: String):
     RecyclerView.Adapter<ChatAdapter.ChatViewHolder>(){
     class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val user = FirebaseAuth.getInstance().currentUser
-        val email = user?.email
-        var R_email = email.toString()
+        val outContent: TextView = itemView.findViewById(R.id.tv_outgoing_chat_content)
+        val outTime: TextView = itemView.findViewById(R.id.tv_outgoing_chat_time)
 
-        var username: TextView? = null
-        var time_chat: TextView? = null
-        var chat_content: TextView? = null
+        val inName: TextView = itemView.findViewById(R.id.tv_incoming_chat_name)
+        val inUsername: TextView = itemView.findViewById(R.id.tv_incoming_chat_username)
+        val inContent: TextView = itemView.findViewById(R.id.tv_incoming_chat_content)
+        val inTime: TextView = itemView.findViewById(R.id.tv_incoming_chat_time)
 
         val outgoingChatView = itemView.findViewById<ConstraintLayout>(R.id.outgoing_chat)
         val incomingChatView = itemView.findViewById<ConstraintLayout>(R.id.incoming_chat)
 
-        init {
-            val femail = data_mail()
-            if (femail == R_email) {
-                outgoingChatView.visibility = View.VISIBLE
-                incomingChatView.visibility = View.GONE
-
-                username = itemView.findViewById(R.id.tv_incoming_chat_name)
-                time_chat = itemView.findViewById(R.id.tv_outgoing_chat_time)
-                chat_content = itemView.findViewById(R.id.tv_outgoing_chat_content)
-            } else {
-                outgoingChatView.visibility = View.GONE
-                incomingChatView.visibility = View.VISIBLE
-
-                username = itemView.findViewById(R.id.tv_incoming_chat_name)
-                time_chat = itemView.findViewById(R.id.tv_incoming_chat_time)
-                chat_content = itemView.findViewById(R.id.tv_incoming_chat_content)
-            }
-        }
-
-        fun data_mail(): String {
-            var femail = ""
-            val uid = "nAW7uzigeaV898EC9LzK6DC3jAR2" //mhs@gmail.com
-            val db = FirebaseFirestore.getInstance()
-            val personQuery = db.collection("users").document(uid)
-
-            personQuery.get()
-                .addOnSuccessListener { document ->
-                    if (document != null) {
-                        // Get the data for the document
-                        femail = document.getString("email").toString()
-                    }
-                }
-                .addOnFailureListener {
-                    // Handle any errors
-//                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-            return femail
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
@@ -80,11 +42,21 @@ class ChatAdapter(private  val chatList: ArrayList<Chat>):
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val chat: Chat = chatList[position]
-        holder.username?.text = chat.username
-        holder.time_chat?.text = chat.time
-        holder.chat_content?.text = chat.message
+
+        if (currUserEmail == chat.email) {
+            holder.outgoingChatView.visibility = View.VISIBLE
+            holder.incomingChatView.visibility = View.GONE
+
+            holder.outContent.text = chat.message.toString()
+            holder.outTime.text = chat.time.toString()
+        } else {
+            holder.outgoingChatView.visibility = View.GONE
+            holder.incomingChatView.visibility = View.VISIBLE
+
+            holder.inName.text = chat.name.toString()
+            holder.inUsername.text = "@" + chat.username.toString()
+            holder.inContent.text = chat.message.toString()
+            holder.inTime.text = chat.time.toString()
+        }
     }
-
-
-
 }

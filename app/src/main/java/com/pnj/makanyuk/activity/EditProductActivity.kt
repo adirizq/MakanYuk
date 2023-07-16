@@ -24,6 +24,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
@@ -60,7 +61,7 @@ class EditProductActivity : AppCompatActivity() {
     private lateinit var imgUri : Uri
 
     private lateinit var role: String
-    private val uid = "DNGowVPxTCy5T7bp5LrK"
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
     private lateinit var currProducts: Products
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,30 +80,31 @@ class EditProductActivity : AppCompatActivity() {
         val deskripsi = intent.getStringExtra("deskripsi").toString()
         val imgUrl = intent.getStringExtra("img_url").toString()
 
-        role = "user"
+        binding.componentView.visibility = View.GONE
+        binding.btnAddToCart.visibility = View.GONE
+        binding.componentEdit.visibility = View.GONE
+        binding.btnDelete.visibility = View.GONE
+        binding.btnSave.visibility = View.GONE
 
-        if (role == "user"){
-            binding.componentView.visibility = View.VISIBLE
-            binding.componentEdit.visibility = View.GONE
+        db.collection("users").document(uid).get().addOnSuccessListener {
+            role = it.getString("role").toString()
 
-            binding.btnAddToCart.visibility = View.VISIBLE
-            binding.btnDelete.visibility = View.GONE
-            binding.btnSave.visibility = View.GONE
+            if (role == "user"){
+                binding.componentView.visibility = View.VISIBLE
+                binding.btnAddToCart.visibility = View.VISIBLE
 
-            binding.tvName.text = nama
-            binding.tvPrice.text = "${NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(harga.toInt()).toString().dropLast(3)}"
-            binding.tvDescription.text = deskripsi
-        } else {
-            binding.componentView.visibility = View.GONE
-            binding.componentEdit.visibility = View.VISIBLE
+                binding.tvName.text = nama
+                binding.tvPrice.text = "${NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(harga.toInt()).toString().dropLast(3)}"
+                binding.tvDescription.text = deskripsi
+            } else {
+                binding.componentEdit.visibility = View.VISIBLE
+                binding.btnDelete.visibility = View.VISIBLE
+                binding.btnSave.visibility = View.VISIBLE
 
-            binding.btnAddToCart.visibility = View.GONE
-            binding.btnDelete.visibility = View.VISIBLE
-            binding.btnSave.visibility = View.VISIBLE
-
-            binding.editName.setText(nama)
-            binding.editPrice.setText(harga)
-            binding.editDescription.setText(deskripsi)
+                binding.editName.setText(nama)
+                binding.editPrice.setText(harga)
+                binding.editDescription.setText(deskripsi)
+            }
         }
 
         Glide.with(this)
@@ -162,7 +164,6 @@ class EditProductActivity : AppCompatActivity() {
 
         binding.btnDelete.setOnClickListener{
             deleteProducts(currProducts, id)
-            deleteFoto("img_product/${currProducts.nama}")
         }
 
         binding.btnImg.setOnClickListener{
@@ -218,12 +219,16 @@ class EditProductActivity : AppCompatActivity() {
                         val storageReference = Firebase.storage.getReferenceFromUrl(products.img_product.toString())
                         storageReference.delete()
                             .addOnSuccessListener {
-                                Toast.makeText(
-                                    applicationContext, products.nama.toString() + "is Deleted",
-                                    Toast.LENGTH_SHORT
-                                ).show()
                                 binding.loading.visibility = View.GONE
-                                finish()
+                                BeautifulDialog.build(this)
+                                    .title("Berhasil", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                                    .description(products.nama.toString() + "is Deleted",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                                    .type(type= BeautifulDialog.TYPE.SUCCESS)
+                                    .position(BeautifulDialog.POSITIONS.CENTER)
+                                    .hideNegativeButton(true)
+                                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                                        finish()
+                                    }
                         }
                     }
             }
@@ -249,6 +254,7 @@ class EditProductActivity : AppCompatActivity() {
         }
     }
 
+
     private fun openCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
             this.packageManager?.let {
@@ -258,24 +264,7 @@ class EditProductActivity : AppCompatActivity() {
             }
         }
     }
-    private fun uploadPictFirebase(img_bitmap: Bitmap, file_name:String) {
-        val baos = ByteArrayOutputStream()
-        val ref = FirebaseStorage.getInstance().reference.child("img_product/${file_name}.jpg")
-        img_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
 
-        val img = baos.toByteArray()
-        ref.putBytes(img)
-            .addOnCompleteListener {
-                if(it.isSuccessful) {
-                    ref.downloadUrl.addOnCompleteListener { Task ->
-                        Task.result.let { Uri ->
-                            imgUri = Uri
-                            binding.btnImg.setImageBitmap(img_bitmap)
-                        }
-                    }
-                }
-            }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -283,20 +272,6 @@ class EditProductActivity : AppCompatActivity() {
             dataGambar = data?.extras?.get("data") as Bitmap
             binding.btnImg.setImageBitmap(dataGambar)
         }
-
-    }
-    private fun deleteFoto(imgUrl: String) {
-//        val storage = Firebase.storage
-//        val storageRef = storage.reference
-//        val deleteFileRef = storageRef.child(file_name)
-//        if(deleteFileRef != null) {
-//            deleteFileRef.delete().addOnSuccessListener {
-//                Log.e("deleted", "success")
-//            }.addOnFailureListener{
-//                Log.e("deleted", "failed")
-//            }
-//        }
-
 
     }
 

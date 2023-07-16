@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.iamageo.library.BeautifulDialog
@@ -39,7 +40,7 @@ class TransactionDetailActivity : AppCompatActivity() {
     private lateinit var doc_id: String
 
     private val db = Firebase.firestore
-    private val uid = "DNGowVPxTCy5T7bp5LrK"
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -3,10 +3,20 @@ package com.pnj.makanyuk.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.iamageo.library.BeautifulDialog
+import com.iamageo.library.description
+import com.iamageo.library.hideNegativeButton
+import com.iamageo.library.onPositive
+import com.iamageo.library.position
+import com.iamageo.library.title
+import com.iamageo.library.type
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.databinding.ActivityRegisterBinding
 
@@ -25,19 +35,16 @@ class RegisterActivity : AppCompatActivity() {
         firestoreDatabase = FirebaseFirestore.getInstance()
 
         binding.btnLogin.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            finish()
         }
 
         binding.btnRegister.setOnClickListener {
+            binding.loading.visibility = View.VISIBLE
             val email = binding.edtEmail.text.toString()
             val password = binding.edtPassword.text.toString()
             val confirm_password = binding.edtPasswordConfirmation.text.toString()
 
             signup_firebase(email, password, confirm_password)
-
-
-
         }
     }
     private fun signup_firebase(email: String, password: String, confirm_password: String) {
@@ -48,16 +55,39 @@ class RegisterActivity : AppCompatActivity() {
                         it.result.user?.let { it1 -> addUsers(it1.uid) }
                     }
                     else {
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                        binding.loading.visibility = View.GONE
+                        BeautifulDialog.build(this)
+                            .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                            .description(it.exception?.message.toString(),  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                            .type(type= BeautifulDialog.TYPE.ERROR)
+                            .position(BeautifulDialog.POSITIONS.CENTER)
+                            .hideNegativeButton(true)
+                            .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                            }
                     }
                 }
             }else {
-                Toast.makeText( this, "Samakan Password dan Konfirmasi Password", Toast.LENGTH_SHORT).show()
+                binding.loading.visibility = View.GONE
+                BeautifulDialog.build(this)
+                    .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                    .description("Password dan Konfirmasi Password berbeda",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                    .type(type= BeautifulDialog.TYPE.ERROR)
+                    .position(BeautifulDialog.POSITIONS.CENTER)
+                    .hideNegativeButton(true)
+                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                    }
             }
 
         }
         else {
-            Toast.makeText(this, "Lengkapi Input", Toast.LENGTH_SHORT).show()
+            BeautifulDialog.build(this)
+                .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                .description("Harap lengkapi input",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                .type(type= BeautifulDialog.TYPE.ERROR)
+                .position(BeautifulDialog.POSITIONS.CENTER)
+                .hideNegativeButton(true)
+                .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                }
         }
     }
 
@@ -68,16 +98,33 @@ class RegisterActivity : AppCompatActivity() {
 
         val users: MutableMap<String, Any> = HashMap()
         users["email"] = email
-        users["nama"] = nama
+        users["name"] = nama
         users["username"] = username
         users["role"] = "user"
 
         firestoreDatabase.collection("users").document(uid).set(users)
             .addOnSuccessListener {
-                finish()
+                binding.loading.visibility = View.GONE
+                BeautifulDialog.build(this)
+                    .title("Berhasil", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                    .description("Berhasil membuat akun",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                    .type(type= BeautifulDialog.TYPE.SUCCESS)
+                    .position(BeautifulDialog.POSITIONS.CENTER)
+                    .hideNegativeButton(true)
+                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                        finish()
+                    }
             }
             .addOnFailureListener{
-                Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
+                binding.loading.visibility = View.GONE
+                BeautifulDialog.build(this)
+                    .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                    .description(it.message.toString(),  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                    .type(type= BeautifulDialog.TYPE.ERROR)
+                    .position(BeautifulDialog.POSITIONS.CENTER)
+                    .hideNegativeButton(true)
+                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                    }
             }
 
     }

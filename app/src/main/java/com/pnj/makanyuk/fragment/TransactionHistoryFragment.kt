@@ -1,5 +1,6 @@
 package com.pnj.makanyuk.fragment
 
+import android.app.Activity
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -7,14 +8,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.iamageo.library.BeautifulDialog
+import com.iamageo.library.description
+import com.iamageo.library.hideNegativeButton
+import com.iamageo.library.onPositive
+import com.iamageo.library.position
+import com.iamageo.library.title
+import com.iamageo.library.type
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.data.transaction.Transaction
 import com.pnj.makanyuk.data.transaction.TransactionAdapter
@@ -32,7 +43,7 @@ class TransactionHistoryFragment : Fragment() {
 
     private val transactionAdapter = TransactionAdapter(transactionList)
 
-    private val uid = "DNGowVPxTCy5T7bp5LrK"
+    private val uid = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,12 +120,36 @@ class TransactionHistoryFragment : Fragment() {
                                 binding.rvTransactions.visibility = View.VISIBLE
                             }
                         }
+                        .addOnFailureListener {
+                            binding.swipeRefresh.isRefreshing = false
+
+                            BeautifulDialog.build(context as Activity)
+                                .title("Gagal", titleColor = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_bold))
+                                .description(it.message.toString(),  color = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_medium))
+                                .type(type= BeautifulDialog.TYPE.ERROR)
+                                .position(BeautifulDialog.POSITIONS.CENTER)
+                                .hideNegativeButton(true)
+                                .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_bold)) {
+                                }
+                        }
 
                     transactionList.add(transaction)
                 }
             }
             .addOnFailureListener {
-                Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+                binding.swipeRefresh.isRefreshing = false
+
+                BeautifulDialog.build(context as Activity)
+                    .title("Gagal", titleColor = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_bold))
+                    .description(it.message.toString(),  color = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_medium))
+                    .type(type= BeautifulDialog.TYPE.ERROR)
+                    .position(BeautifulDialog.POSITIONS.CENTER)
+                    .hideNegativeButton(true)
+                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(context as Activity, R.color.black), fontStyle = ResourcesCompat.getFont(context as Activity, R.font.poppins_bold)) {
+                    }
+            }
+            .addOnCompleteListener {
+                binding.swipeRefresh.isRefreshing = false
             }
     }
 

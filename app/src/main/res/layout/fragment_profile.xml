@@ -10,6 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         android:padding="16dp">
 
         <TextView
@@ -144,6 +146,22 @@
             android:stateListAnimator="@animator/btn_click"
             android:text="Simpan Perubahan"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_outline_red_rounded"
+            android:textColor="@color/red"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingVertical="16dp"
+            android:stateListAnimator="@animator/btn_click"
+            android:text="Logout" />
 
     </LinearLayout>
 
