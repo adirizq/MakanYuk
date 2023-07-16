@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.pnj.makanyuk.R
 
-class TransactionItemAdapter(private val transactionItemList: ArrayList<TransactionItem>): RecyclerView.Adapter<TransactionItemAdapter.TransacationItemViewHolder>() {
+class
+TransactionItemAdapter(private val transactionItemList: ArrayList<TransactionItem>): RecyclerView.Adapter<TransactionItemAdapter.TransacationItemViewHolder>() {
 
     class TransacationItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val productName: TextView = itemView.findViewById(R.id.tv_name)
