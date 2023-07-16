@@ -64,6 +64,10 @@ dependencies {
     implementation 'io.github.chaosleung:pinview:1.4.4'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'com.github.bumptech.glide:glide:4.15.1'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.github.iamageo:BeautifulDialog:1.0.6'
+    implementation 'androidx.room:room-runtime:2.5.2'
+    implementation 'androidx.room:room-ktx:2.5.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

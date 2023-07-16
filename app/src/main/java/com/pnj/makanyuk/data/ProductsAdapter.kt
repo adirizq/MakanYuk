@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pnj.makanyuk.R
+import com.pnj.makanyuk.data.cart.CartItem
 
 class ProductsAdapter(private val productsList : ArrayList<Products>) :
     RecyclerView.Adapter<ProductsAdapter.ProductsViewHolder>() {
@@ -17,7 +18,7 @@ class ProductsAdapter(private val productsList : ArrayList<Products>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductsViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_menu, parent, false  )
+            .inflate(R.layout.item_menu, parent, false)
         return ProductsViewHolder(itemView)
     }
 

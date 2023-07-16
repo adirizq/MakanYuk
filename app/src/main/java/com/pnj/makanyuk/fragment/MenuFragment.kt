@@ -1,5 +1,6 @@
 package com.pnj.makanyuk.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.pnj.makanyuk.R
+import com.pnj.makanyuk.activity.CartActivity
 import com.pnj.makanyuk.data.Products
 import com.pnj.makanyuk.data.ProductsAdapter
 import com.pnj.makanyuk.databinding.FragmentMenuBinding
@@ -57,6 +59,14 @@ class MenuFragment : Fragment() {
         productsRecyclerView.adapter = productsAdapter
 
         load_data()
+
+        binding.btnShoppingBag.visibility = View.VISIBLE
+
+        binding.btnShoppingBag.setOnClickListener {
+            val intent = Intent(activity, CartActivity::class.java)
+            activity?.startActivity(intent)
+        }
+
         return binding.root
     }
 

@@ -4,9 +4,16 @@ import com.google.firebase.Timestamp
 import com.google.firebase.database.PropertyName
 
 data class Transaction(
-    @PropertyName("type") var type: String? = null,
-    @PropertyName("status") var status: String? = null,
-    @PropertyName("total_price") var totalPrice: Int? = null,
-    @PropertyName("created_at") var createdAt: Timestamp? = null,
-    @PropertyName("products") var products: ArrayList<TransactionItem>? = null,
-)
+    var doc_id: String,
+    var kode_transaksi: String,
+    var type: String,
+    var status: String,
+    var alamat_pengantaran: String,
+    var total_price: Int,
+    var created_at: Timestamp?,
+    var products: ArrayList<TransactionItem>?,
+){
+    constructor() : this("", "", "", "", "",0, null, null)
+}
+
+

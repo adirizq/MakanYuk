@@ -29,11 +29,11 @@ class TransactionItemAdapter(private val transactionItemList: ArrayList<Transact
     override fun onBindViewHolder(holder: TransacationItemViewHolder, position: Int) {
         val transactionItem = transactionItemList[position]
 
-        holder.productName.text = transactionItem.name.toString()
+        holder.productName.text = transactionItem.name
         holder.portion.text = transactionItem.portion.toString() + " Porsi"
 
         Glide.with(holder.itemView.context)
-            .load(transactionItem.imgUrl.toString())
+            .load(transactionItem.img_url.toString())
             .placeholder(R.drawable.image_placeholder)
             .into(holder.img)
     }
