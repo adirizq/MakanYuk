@@ -73,6 +73,7 @@ class TransactionDetailActivity : AppCompatActivity() {
                                 .position(BeautifulDialog.POSITIONS.CENTER)
                                 .hideNegativeButton(true)
                                 .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                                    finish()
                                 }
                         }
                 }

@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+        app:layout_constraintBottom_toTopOf="@+id/btm_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -31,93 +31,196 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/camera_placeholder" />
 
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/edit_name"
+            <LinearLayout
+                android:id="@+id/component_edit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Nama produk"
-                android:includeFontPadding="false"
-                android:inputType="text"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edit_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Harga produk"
-                android:includeFontPadding="false"
-                android:inputType="number"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
+                <EditText
+                    android:id="@+id/edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/bg_input_text"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Nama produk"
+                    android:includeFontPadding="false"
+                    android:inputType="text"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="18dp"
+                    android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/edit_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Deskripsi produk"
-                android:includeFontPadding="false"
-                android:inputType="textMultiLine"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
+                <EditText
+                    android:id="@+id/edit_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_input_text"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Harga produk"
+                    android:includeFontPadding="false"
+                    android:inputType="number"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="18dp"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/btn_delete"
+                <EditText
+                    android:id="@+id/edit_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_input_text"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="Deskripsi produk"
+                    android:includeFontPadding="false"
+                    android:inputType="textMultiLine"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="18dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/component_view"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@drawable/bg_yellow_rounded"
-                android:clickable="true"
-                android:focusable="true"
-                android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingVertical="16dp"
-                android:stateListAnimator="@animator/btn_click"
-                android:text="Hapus Produk"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Nama Produk"
+                    android:textSize="20dp"
+                    android:includeFontPadding="false"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rp999.000"
+                    android:textSize="14dp"
+                    android:includeFontPadding="false"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/grey_font"/>
+
+                <TextView
+                    android:id="@+id/tv_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Deskripsi Produk"
+                    android:textSize="14dp"
+                    android:includeFontPadding="false"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
     </ScrollView>
 
-    <TextView
-        android:id="@+id/btn_save"
+    <LinearLayout
+        android:id="@id/btm_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:background="@drawable/bg_yellow_rounded"
-        android:clickable="true"
-        android:focusable="true"
-        android:fontFamily="@font/poppins_bold"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:paddingVertical="16dp"
-        android:stateListAnimator="@animator/btn_click"
-        android:text="Simpan Perubahan"
-        android:textColor="@color/black"
+        android:background="@color/white"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/btn_add_to_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            android:background="@drawable/bg_yellow_rounded"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingVertical="16dp"
+            android:stateListAnimator="@animator/btn_click"
+            android:text="Tambah ke Keranjang" />
+
+        <TextView
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_yellow_rounded"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingVertical="16dp"
+            android:stateListAnimator="@animator/btn_click"
+            android:text="Simpan Perubahan" />
+
+        <TextView
+            android:id="@+id/btn_delete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_outline_red_rounded"
+            android:textColor="@color/red"
+            android:clickable="true"
+            android:focusable="true"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingVertical="16dp"
+            android:stateListAnimator="@animator/btn_click"
+            android:text="Hapus Produk" />
+
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:indicatorColor="@color/yellow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

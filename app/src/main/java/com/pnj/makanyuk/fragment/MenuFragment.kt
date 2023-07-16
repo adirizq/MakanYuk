@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
@@ -19,9 +20,10 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.activity.CartActivity
-import com.pnj.makanyuk.data.Products
-import com.pnj.makanyuk.data.ProductsAdapter
+import com.pnj.makanyuk.data.products.ProductsAdapter
 import com.pnj.makanyuk.activity.AddProductActivity
+import com.pnj.makanyuk.data.products.Products
+import com.pnj.makanyuk.data.transaction.Transaction
 import com.pnj.makanyuk.databinding.FragmentMenuBinding
 
 /**
@@ -35,12 +37,42 @@ class MenuFragment : Fragment() {
     private lateinit var productsRecyclerView : RecyclerView
     private lateinit var productsArrayList : ArrayList<Products>
     private lateinit var productsAdapter: ProductsAdapter
+
+    private val uid = "DNGowVPxTCy5T7bp5LrK"
     private var db = FirebaseFirestore.getInstance()
+    private var fullProductsArrayList = ArrayList<Products>()
+
+    private lateinit var role: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        load_data()
+
+        if (role == "user") {
+            binding.btnShoppingBag.visibility = View.GONE
+            binding.btnAddProduct.visibility = View.GONE
+
+            db.collection("users").document(uid).get()
+                .addOnSuccessListener {
+                    var cartItem = it.get("cart_items")
+
+                    if (cartItem != null) {
+                        cartItem = cartItem as List<*>
+                        if (cartItem.size != 0) {
+                            binding.btnShoppingBag.visibility = View.VISIBLE
+                        }
+                    }
+                }
+        } else {
+            binding.btnShoppingBag.visibility = View.GONE
+            binding.btnAddProduct.visibility = View.VISIBLE
+        }
     }
 
 
@@ -49,9 +81,17 @@ class MenuFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMenuBinding.inflate(layoutInflater)
+        role = "user"
+
+        binding.swipeRefresh.setColorSchemeResources(R.color.yellow)
+
+        load_data()
+
+        binding.swipeRefresh.setOnRefreshListener {
+            load_data()
+        }
 
         productsRecyclerView = binding.rvMenu
-        // productsRecyclerView.layoutManager = LinearLayoutManager(activity)
         productsRecyclerView.setHasFixedSize(true)
 
         productsArrayList = arrayListOf()
@@ -59,13 +99,31 @@ class MenuFragment : Fragment() {
 
         productsRecyclerView.adapter = productsAdapter
 
-        load_data()
 
-        binding.btnShoppingBag.visibility = View.VISIBLE
 
         binding.btnShoppingBag.setOnClickListener {
             val intent = Intent(activity, CartActivity::class.java)
             activity?.startActivity(intent)
+        }
+
+        if (role == "user") {
+            binding.btnShoppingBag.visibility = View.GONE
+            binding.btnAddProduct.visibility = View.GONE
+
+            db.collection("users").document(uid).get()
+                .addOnSuccessListener {
+                    var cartItem = it.get("cart_items")
+
+                    if (cartItem != null) {
+                        cartItem = cartItem as List<*>
+                        if (cartItem.size != 0) {
+                            binding.btnShoppingBag.visibility = View.VISIBLE
+                        }
+                    }
+                }
+        } else {
+            binding.btnShoppingBag.visibility = View.GONE
+            binding.btnAddProduct.visibility = View.VISIBLE
         }
 
         binding.btnAddProduct.setOnClickListener{
@@ -94,7 +152,10 @@ class MenuFragment : Fragment() {
 
     }
 
+
     private fun load_data() {
+        binding.rvMenu.visibility = View.INVISIBLE
+        binding.swipeRefresh.isRefreshing = true
 
         db.collection("products")
             .get()
@@ -105,28 +166,46 @@ class MenuFragment : Fragment() {
                     product.id = document.id
                     productsArrayList.add(product)
                 }
-               productsAdapter.notifyDataSetChanged()
+                productsAdapter.notifyDataSetChanged()
+
+                fullProductsArrayList.clear()
+                fullProductsArrayList.addAll(productsArrayList)
+
+                binding.swipeRefresh.isRefreshing = false
+                binding.rvMenu.visibility = View.VISIBLE
             }
-
-
 
     }
 
     private fun search_data(keyword :String) {
+        binding.rvMenu.visibility = View.INVISIBLE
+        binding.swipeRefresh.isRefreshing = true
         productsArrayList.clear()
 
-        db = FirebaseFirestore.getInstance()
-
-        val query = db.collection("products")
-            .orderBy("nama")
-            .startAt(keyword)
-            .get()
-        query.addOnSuccessListener {
-            productsArrayList.clear()
-            for (document in it) {
-                productsArrayList.add(document.toObject(Products::class.java))
-            }
+        if (keyword != "") {
+            productsArrayList.addAll(fullProductsArrayList.filter { product ->
+                product.nama?.contains(keyword, true) ?: false
+            } as ArrayList<Products>)
+        } else {
+            productsArrayList.addAll(fullProductsArrayList)
         }
+
+        productsAdapter.notifyDataSetChanged()
+        binding.swipeRefresh.isRefreshing = false
+        binding.rvMenu.visibility = View.VISIBLE
+
+//        val query = db.collection("products")
+//            .orderBy("nama")
+//            .startAt(keyword)
+//            .get()
+//        query.addOnSuccessListener {
+//            productsArrayList.clear()
+//            for (document in it) {
+//                productsArrayList.add(document.toObject(Products::class.java))
+//            }
+//            binding.swipeRefresh.isRefreshing = false
+//            binding.rvMenu.visibility = View.VISIBLE
+//        }
     }
 
 }

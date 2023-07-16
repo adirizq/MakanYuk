@@ -3,12 +3,9 @@ package com.pnj.makanyuk.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
@@ -24,12 +21,9 @@ import com.iamageo.library.type
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.data.cart.CartItem
 import com.pnj.makanyuk.data.cart.CartItemAdapter
-import com.pnj.makanyuk.data.cart.CartItemDatabase
 import com.pnj.makanyuk.databinding.ActivityCartBinding
-import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.Calendar
 import java.util.Locale
 import java.util.TimeZone
@@ -44,7 +38,6 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
     private val uid = "DNGowVPxTCy5T7bp5LrK"
     private var totalPrice: Int = 0
 
-    private lateinit var cartItemDB: CartItemDatabase
     private lateinit var cartItemList: ArrayList<CartItem>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,15 +47,35 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
 
         setContentView(binding.root)
 
-        cartItemDB = CartItemDatabase(this@CartActivity)
         dateFormat.timeZone = TimeZone.getTimeZone("Asia/Jakarta")
 
         binding.rvItemCart.layoutManager = LinearLayoutManager(this)
 
-        lifecycleScope.launch {
-            cartItemList = cartItemDB.getCartItemDao().getAllCartItem()
-            binding.rvItemCart.adapter = CartItemAdapter(cartItemList, this@CartActivity, lifecycleScope, cartItemDB)
-        }
+        cartItemList = arrayListOf<CartItem>()
+
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener {
+                val cartItem = it.get("cart_items")
+
+                if (cartItem != null) {
+                    val cartItemMap = cartItem as MutableList<MutableMap<String, Any>>
+
+                    cartItemList.addAll(
+                        cartItemMap.map { hashMap ->
+                            CartItem(hashMap["img_url"] as String, hashMap["name"] as String, (hashMap["price"] as Long).toInt(), (hashMap["portion"] as Long).toInt())
+                        }
+                    )
+                }
+
+                updateTotalPrice()
+
+                binding.rvItemCart.adapter = CartItemAdapter(cartItemList, this@CartActivity, db, uid)
+            }
+
+//        lifecycleScope.launch {
+//            cartItemList = cartItemDB.getCartItemDao().getAllCartItem()
+//
+//        }
 
         binding.rbAmbilSendiri.setOnCheckedChangeListener { compoundButton, b ->
             if (binding.rbAmbilSendiri.isChecked) {
@@ -82,7 +95,6 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
                 .type(type= BeautifulDialog.TYPE.ALERT)
                 .position(BeautifulDialog.POSITIONS.CENTER)
                 .onPositive(text = "Ya", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
-                    Toast.makeText(this, "confirm", Toast.LENGTH_SHORT).show()
                     saveTransaction(uid)
                 }
                 .onNegative(text = "Tidak", buttonBackgroundColor = R.drawable.bg_outline_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.yellow), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
@@ -105,11 +117,37 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
             type = "Diantar"
             typeInvoice = "D"
             alamatPengantaran = binding.edtAddress.text.toString()
+
+            if(alamatPengantaran == "") {
+                BeautifulDialog.build(this)
+                    .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                    .description("Harap isi semua kolom",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                    .type(type= BeautifulDialog.TYPE.ERROR)
+                    .position(BeautifulDialog.POSITIONS.CENTER)
+                    .hideNegativeButton(true)
+                    .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold), shouldIDismissOnClick = true) {
+                    }
+
+                return
+            }
+        }
+
+        if(totalPrice == 0) {
+            BeautifulDialog.build(this)
+                .title("Gagal", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                .description("Harap isi semua kolom",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                .type(type= BeautifulDialog.TYPE.ERROR)
+                .position(BeautifulDialog.POSITIONS.CENTER)
+                .hideNegativeButton(true)
+                .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold), shouldIDismissOnClick = true) {
+                }
+
+            return
         }
 
         val createdAt = Calendar.getInstance().time
-        val formatedDateTimeNow = dateFormat.format(createdAt)
-        val kodeTransaksi = "INV/${formatedDateTimeNow[0]}/${typeInvoice}/${formatedDateTimeNow[1]}"
+        val formatedDateTimeNow = dateFormat.format(createdAt).split('/')
+        val kodeTransaksi = "INV/${formatedDateTimeNow[0]}/${typeInvoice}/${userId.subSequence(0, 7)}/${formatedDateTimeNow[1]}"
 
         val status = "Dalam Proses"
 
@@ -129,37 +167,61 @@ class CartActivity : AppCompatActivity(), CartItemAdapter.OnAddSubtractPortionCl
                         .collection("transactions")
                         .document(documentReference.id)
                         .collection("products")
-                        .add(p.toMap())
+                        .add(p)
                         .addOnSuccessListener {
-                            BeautifulDialog.build(this)
-                                .title("Berhasil", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
-                                .description("Pesanan berhasil dibuat",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
-                                .type(type= BeautifulDialog.TYPE.SUCCESS)
-                                .position(BeautifulDialog.POSITIONS.CENTER)
-                                .hideNegativeButton(true)
-                                .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
-                                    finish()
+                            db.collection("users").document(uid).get()
+                                .addOnSuccessListener {
+                                    val cartItemList = mutableListOf<MutableMap<String, Any>>()
+                                    db.collection("users").document(uid).update(hashMapOf("cart_items" to cartItemList) as Map<String, Any>).addOnSuccessListener {
+                                        BeautifulDialog.build(this)
+                                            .title("Berhasil", titleColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold))
+                                            .description("Pesanan berhasil dibuat",  color = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_medium))
+                                            .type(type= BeautifulDialog.TYPE.SUCCESS)
+                                            .position(BeautifulDialog.POSITIONS.CENTER)
+                                            .hideNegativeButton(true)
+                                            .onPositive(text = "Tutup", buttonBackgroundColor = R.drawable.bg_yellow_rounded, textColor = ContextCompat.getColor(this, R.color.black), fontStyle = ResourcesCompat.getFont(this, R.font.poppins_bold)) {
+                                                finish()
+                                            }
+                                    }
                                 }
+
+
                         }
                 }
             }
     }
 
     fun updateTotalPrice() {
-        lifecycleScope.launch {
-            totalPrice = 0
+        binding.tvTotalPrice.text = "..."
 
-            cartItemList = cartItemDB.getCartItemDao().getAllCartItem()
+        db.collection("users").document(uid).get()
+            .addOnSuccessListener {
+                cartItemList.clear()
+                totalPrice = 0
 
-            for(item in cartItemList) {
-                totalPrice += item.price
+                val cartItem = it.get("cart_items")
+
+                if (cartItem != null) {
+                    val cartItemMap = cartItem as MutableList<MutableMap<String, Any>>
+
+                    cartItemList.addAll(
+                        cartItemMap.map { hashMap ->
+                            CartItem(hashMap["img_url"] as String, hashMap["name"] as String, (hashMap["price"] as Long).toInt(), (hashMap["portion"] as Long).toInt())
+                        }
+                    )
+                }
+
+                for (item in cartItemList) {
+                    totalPrice += (item.price * item.portion)
+                }
+
+                binding.tvTotalPrice.text = NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(totalPrice).toString().dropLast(3)
+
             }
-
-            binding.tvTotalPrice.text = NumberFormat.getCurrencyInstance(Locale("id", "ID")).format(totalPrice).toString().dropLast(3)
-        }
     }
 
     override fun onAddSubtractPortionClick() {
         updateTotalPrice()
     }
 }
+

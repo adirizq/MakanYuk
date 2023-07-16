@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
-            android:text="Menu Pilihan"
+            android:text="Menu Terbaru"
             android:textSize="16sp"
             android:fontFamily="@font/poppins_bold"
             android:includeFontPadding="false"
@@ -104,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:text="Ini nih menu dan paket pilihan kami untuk minggu ini."
+            android:text="Ini nih menu terbaru kami."
             android:textSize="14sp"
             android:textColor="@color/text_grey"
             android:includeFontPadding="false"
@@ -112,7 +112,7 @@
             app:layout_constraintStart_toStartOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_laris"
+            android:id="@+id/rv_new"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -123,13 +123,13 @@
             app:layout_constraintTop_toBottomOf="@id/tv_laris_desc"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:spanCount="3"
-            tools:itemCount="6"
+            app:spanCount="2"
+            tools:itemCount="4"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/item_menu"/>
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/loading_laris"
+            android:id="@+id/loading_new"
             android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -138,8 +138,8 @@
             android:indeterminate="true"
             app:indicatorColor="@color/yellow"
             app:layout_constraintTop_toBottomOf="@id/tv_laris_desc"
-            app:layout_constraintStart_toStartOf="@id/rv_laris"
-            app:layout_constraintEnd_toEndOf="@id/rv_laris"
+            app:layout_constraintStart_toStartOf="@id/rv_new"
+            app:layout_constraintEnd_toEndOf="@id/rv_new"
             app:layout_constraintBottom_toTopOf="@id/view_horizontal_2"/>
 
         <View
@@ -149,7 +149,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="16dp"
             android:background="#11000000"
-            app:layout_constraintTop_toBottomOf="@id/rv_laris"
+            app:layout_constraintTop_toBottomOf="@id/rv_new"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

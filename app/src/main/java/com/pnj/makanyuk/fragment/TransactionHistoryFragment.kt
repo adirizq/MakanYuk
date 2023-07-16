@@ -67,14 +67,13 @@ class TransactionHistoryFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-//        binding.swipeRefresh.isRefreshing = true
+        retrieveAllData(uid)
     }
 
 
     private fun retrieveAllData(uid: String) {
         binding.rvTransactions.visibility = View.INVISIBLE
         binding.swipeRefresh.isRefreshing = true
-        transactionList.clear()
 
         db.collection("users").document(uid).collection("transactions")
             .orderBy("created_at", Query.Direction.DESCENDING)
@@ -82,6 +81,8 @@ class TransactionHistoryFragment : Fragment() {
             .addOnSuccessListener { results ->
                 val documentCount = results.size()
                 var documentsProcessed = 0
+
+                transactionList.clear()
 
                 for (document in results) {
                     val transaction = document.toObject(Transaction::class.java)

@@ -6,13 +6,20 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.pnj.makanyuk.R
 import com.pnj.makanyuk.databinding.ActivityAddProductBinding
 import java.io.ByteArrayOutputStream
+import java.util.UUID
 
 class AddProductActivity : AppCompatActivity() {
     private lateinit var binding : ActivityAddProductBinding
@@ -45,31 +52,40 @@ class AddProductActivity : AppCompatActivity() {
     }
 
     fun addProducts() {
-        var nama : String = binding.addName.text.toString()
-        var harga : String = binding.addPrice.text.toString()
-        var deskripsi : String = binding.addDescription.text.toString()
+        binding.loading.visibility = View.VISIBLE
+        val nama : String = binding.addName.text.toString()
+        val harga : String = binding.addPrice.text.toString()
+        val deskripsi : String = binding.addDescription.text.toString()
 
-        val products : MutableMap<String, Any> = HashMap()
-        products["nama"] = nama
-        products["harga"] = harga.toInt()
-        products["deskripsi"] = deskripsi
-
-        if(dataGambar != null) {
-            uploadPictFirebase(dataGambar!!, "${nama}")
+        if (nama == "" || harga == "" || deskripsi == "" || dataGambar == null) {
+            binding.loading.visibility = View.GONE
+            Toast.makeText(this, "Harap lengkapi semua data", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        firestoreDatabase.collection("products").add(products)
-            .addOnSuccessListener {
-                val intentMain = Intent(this, MainActivity::class.java)
-                startActivity(intentMain)
+
+        uploadPictFirebase(dataGambar!!)
+            .addOnSuccessListener { downloadUrl ->
+                val products : MutableMap<String, Any> = HashMap()
+
+                products["nama"] = nama
+                products["harga"] = harga.toInt()
+                products["deskripsi"] = deskripsi
+                products["img_product"] = downloadUrl
+
+                firestoreDatabase.collection("products").add(products)
+                    .addOnSuccessListener {
+                        binding.loading.visibility = View.GONE
+                        finish()
+                    }
+            }
+            .addOnFailureListener {
+                binding.loading.visibility = View.GONE
+                Toast.makeText(this, "Gagal", Toast.LENGTH_SHORT).show()
+                finish()
             }
     }
 
-//    private fun pickImageGallery() {
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.type = "image/"
-//        startActivityForResult(intent, IMAGE_REQUEST_CODE)
-//    }
     
     private fun openCamera() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also {intent ->
@@ -91,23 +107,22 @@ class AddProductActivity : AppCompatActivity() {
         }
     }
 
-    private fun uploadPictFirebase(img_bitmap: Bitmap, file_name:String) {
+    private fun uploadPictFirebase(bitmap: Bitmap): Task<Uri> {
         val baos = ByteArrayOutputStream()
-        val ref = FirebaseStorage.getInstance().reference.child("img_product/${file_name}.jpg")
-        img_bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
 
-        val img = baos.toByteArray()
-        ref.putBytes(img)
-            .addOnCompleteListener {
-                if(it.isSuccessful) {
-                    ref.downloadUrl.addOnCompleteListener { Task ->
-                        Task.result.let { Uri ->
-                            imgUri = Uri
-                            binding.btnImg.setImageBitmap(img_bitmap)
-                        }
-                    }
+        val fileName = UUID.randomUUID().toString() + ".jpg"
+        val refStorage = FirebaseStorage.getInstance().reference.child("img_product/$fileName")
+
+        return refStorage.putBytes(data).continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
                 }
             }
+            refStorage.downloadUrl
+        }
     }
 
 
