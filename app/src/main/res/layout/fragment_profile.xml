@@ -69,6 +69,7 @@
             android:background="@drawable/bg_input_text"
             android:fontFamily="@font/poppins_medium"
             android:hint="Email"
+            android:enabled="false"
             android:includeFontPadding="false"
             android:inputType="textEmailAddress"
             android:paddingHorizontal="24dp"
