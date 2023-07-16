@@ -30,7 +30,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: FragmentProfileBinding
     private lateinit var firebaseAuth: FirebaseAuth
-//    private val uid = "MSmu9WTeekTuDLN6wUHx8KKSXnw1" //ksm@gmail.com
+//    private val uid = "MSmu9WTeekTuDLN6wUHx8KKSXnw1"
     private val uid = "nAW7uzigeaV898EC9LzK6DC3jAR2" //mhs@gmail.com
 
 
