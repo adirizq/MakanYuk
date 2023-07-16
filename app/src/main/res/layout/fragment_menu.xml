@@ -10,13 +10,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_shopping_bag"
-        android:visibility="gone"
+        android:visibility="visible"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_margin="32dp"
         android:backgroundTint="@color/yellow"
         app:cardCornerRadius="8dp"
-        app:cardElevation="12dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -48,13 +48,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_add_product"
-        android:visibility="gone"
         android:layout_width="56dp"
+        android:visibility="gone"
         android:layout_height="56dp"
         android:layout_margin="32dp"
         android:backgroundTint="@color/yellow"
         app:cardCornerRadius="8dp"
-        app:cardElevation="12dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -135,9 +135,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ic_location" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_menu"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
@@ -145,15 +144,25 @@
         android:layout_marginBottom="16dp"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:nestedScrollingEnabled="false"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="@color/yellow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_search_bar"
-        app:layout_constraintVertical_bias="0.0"
-        app:spanCount="3"
-        tools:listitem="@layout/item_menu" />
+        app:layout_constraintTop_toBottomOf="@id/edt_search_bar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_menu"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_menu" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/loading"

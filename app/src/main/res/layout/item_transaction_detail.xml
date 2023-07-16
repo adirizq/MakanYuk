@@ -11,6 +11,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         tools:src="@tools:sample/avatars"
         app:shapeAppearanceOverlay="@style/roundedCorners"
         app:layout_constraintStart_toStartOf="parent"

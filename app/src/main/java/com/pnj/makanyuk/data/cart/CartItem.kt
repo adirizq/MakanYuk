@@ -3,23 +3,16 @@ package com.pnj.makanyuk.data.cart
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.Timestamp
+import com.pnj.makanyuk.data.transaction.TransactionItem
 import java.io.Serializable
 
-@Entity(tableName = "cart_item")
-
 data class CartItem(
-    @PrimaryKey val doc_id: String,
-    @ColumnInfo("img_url") var imgUrl: String = "",
-    @ColumnInfo("name") var name: String = "",
-    @ColumnInfo("price") var price: Int = 0,
-    @ColumnInfo("portion") var portion: Int = 0
-) {
-    fun toMap(): Map<String, Any> {
-        return mapOf(
-            "img_url" to imgUrl,
-            "name" to name,
-            "price" to price,
-            "portion" to portion
-        )
-    }
+    var img_url: String,
+    var name: String,
+    var price: Int,
+    var portion: Int
+){
+
+    constructor() : this("", "", 0, 0)
 }
