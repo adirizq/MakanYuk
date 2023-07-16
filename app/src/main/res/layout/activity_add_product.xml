@@ -36,7 +36,7 @@
             </androidx.cardview.widget.CardView>
 
             <EditText
-                android:id="@+id/edt_name"
+                android:id="@+id/add_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -50,7 +50,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/edt_price"
+                android:id="@+id/add_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -64,7 +64,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/edt_description"
+                android:id="@+id/add_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

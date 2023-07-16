@@ -34,14 +34,15 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/img_product"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-30dp"
                 android:adjustViewBounds="true"
-                tools:src="@tools:sample/avatars"
-                app:shapeAppearanceOverlay="@style/roundedCorners"
+                app:layout_constraintStart_toStartOf="@id/box"
                 app:layout_constraintTop_toTopOf="@id/box"
-                app:layout_constraintStart_toStartOf="@id/box"/>
+                app:shapeAppearanceOverlay="@style/roundedCorners"
+                tools:src="@tools:sample/avatars" />
 
 
             <TextView

@@ -48,8 +48,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/btn_add_product"
-        android:visibility="gone"
         android:layout_width="56dp"
+        android:visibility="visible"
         android:layout_height="56dp"
         android:layout_margin="32dp"
         android:backgroundTint="@color/yellow"

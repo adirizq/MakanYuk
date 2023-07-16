@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.EditProductActivity">
+    tools:context=".activity.ViewProductActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete"
+        app:layout_constraintBottom_toTopOf="@+id/btn_Back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -35,73 +35,43 @@
 
             </androidx.cardview.widget.CardView>
 
-            <EditText
-                android:id="@+id/edit_name"
+            <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Nama produk"
-                android:includeFontPadding="false"
-                android:inputType="text"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edit_price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:text="Ayam Goreng Taliwang"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Harga produk"
-                android:includeFontPadding="false"
-                android:inputType="number"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
-
-            <EditText
-                android:id="@+id/edit_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/bg_input_text"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="Deskripsi produk"
-                android:includeFontPadding="false"
-                android:inputType="textMultiLine"
-                android:paddingHorizontal="24dp"
-                android:paddingVertical="18dp"
-                android:textSize="14sp" />
+                android:layout_marginBottom="12dp"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_bold"
+                android:includeFontPadding="false" />
 
             <TextView
-                android:id="@+id/btn_delete"
+                android:id="@+id/tv_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:background="@drawable/bg_yellow_rounded"
-                android:clickable="true"
-                android:focusable="true"
+                android:text="Rp. 12.000"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="14sp"
                 android:fontFamily="@font/poppins_bold"
-                android:gravity="center"
-                android:includeFontPadding="false"
-                android:paddingVertical="16dp"
-                android:stateListAnimator="@animator/btn_click"
-                android:text="Hapus Produk"
-                android:textColor="@color/black"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                android:includeFontPadding="false" />
 
+            <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ayam goreng taliwang khas lombok 1 potong"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"                android:textSize="14sp"
+                android:fontFamily="@font/poppins_bold"
+                android:includeFontPadding="false" />
         </LinearLayout>
 
     </ScrollView>
 
     <TextView
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_Back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -113,7 +83,7 @@
         android:includeFontPadding="false"
         android:paddingVertical="16dp"
         android:stateListAnimator="@animator/btn_click"
-        android:text="Simpan Perubahan"
+        android:text="Kembali"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
